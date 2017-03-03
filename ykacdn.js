@@ -1,4 +1,4 @@
-/*! ykv <0.1.4@2017-02-14T02:23Z> | Copyright (c) 2015-2016 1VERGE, Inc */
+/*! ykv <0.1.4@2017-03-02T12:50Z> | Copyright (c) 2015-2016 1VERGE, Inc */
 !
 function(t, e) {
 	"object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == typeof exports ? exports.ykv = e() : t.ykv = e()
@@ -1839,8 +1839,13 @@ function() {
 			var n = e.browser,
 			i = e.ObjectCreate({
 				ctype: "86",
+				ev: 2,
 				defaultQuality: "mp4",
 				defaultLanguage: "guoyu",
+				ek: {
+					a1: "bf",
+					a8: "f"
+				},
 				mk: {
 					a3: "1z4i",
 					a4: "86rv",
@@ -2209,13 +2214,22 @@ function() {
 				_getPlayData: function(t) {
 					var e = this;
 					this._retryPlay || (this._retryPlay = 0);
-					var n = arguments.callee;
+					var n = arguments.callee,
+					i = (new Date).getTime();
 					e._promise = o.play.getPlayData(e._options).then(function(n) {
-						e.sendAcfunMonitor(e._options.vid, r.MONITOR_TYPE.GET_LIST_NETWORK, r.MONITOR_STATUS_SUCCESS),
+						var o = (new Date).getTime() - i;
+						e.sendAcfunMonitor(e._options.vid, r.MONITOR_TYPE.GET_LIST_NETWORK, r.MONITOR_STATUS_SUCCESS, o),
 						e._parseData(n, t)
 					},
 					function() {
-						this._retryPlay < 3 ? (n(t), this._retryPlay++) : (e.sendAcfunMonitor(e._options.vid, r.MONITOR_TYPE.GET_LIST_NETWORK, r.MONITOR_STATUS_FAILED), e._setError(2003, "Get PlayData Failed"), delete this._retryPlay)
+						if (this._retryPlay < 3) n(t),
+						this._retryPlay++;
+						else {
+							var o = (new Date).getTime() - i;
+							e.sendAcfunMonitor(e._options.vid, r.MONITOR_TYPE.GET_LIST_NETWORK, r.MONITOR_STATUS_FAILED, o),
+							e._setError(2003, "Get PlayData Failed"),
+							delete this._retryPlay
+						}
 					})
 				},
 				_parseData: function(t, e) {
@@ -2390,13 +2404,14 @@ function() {
 					return e.$$guid = n.$$guid,
 					a
 				},
-				sendAcfunMonitor: function(t, e, n) {
-					var i = "http://aplay-vod.cn-beijing.aliyuncs.com/acfun/monitor?",
-					r = {};
-					r.vid = t,
-					r.source = e,
-					r.code = n,
-					o.log.send(i + a.urlParameter(r))
+				sendAcfunMonitor: function(t, e, n, i) {
+					var r = "http://aplay-vod.cn-beijing.aliyuncs.com/acfun/monitor?",
+					s = {};
+					s.vid = t,
+					s.source = e,
+					s.code = n,
+					s.time = i,
+					o.log.send(r + a.urlParameter(s))
 				}
 			});
 			t.exports = h
@@ -2538,7 +2553,8 @@ function() {
 					return new e.Promise(function(o, a) {
 						var s = {
 							vid: t.vid,
-							ct: i.ctype
+							ct: i.ctype,
+							ev: i.ev
 						};
 						t.client_id && (s.cid = t.client_id),
 						t.sign && (s.sign = t.sign),
@@ -2549,12 +2565,13 @@ function() {
 							data: s,
 							time: 1e4,
 							success: function(e) {
+								var s = 80481;
 								if (e.encrypt && "1" === e.encrypt) {
-									var s = n.rc4("328" + i.mk.a5 + "d8", n.decode64(e.data));
-									e.data = JSON.parse(s)
+									var u = n.jie(i.ek.a1 + s + i.ek.a8, n.decode64(e.data));
+									e.data = JSON.parse(u)
 								}
-								var u = e.data;
-								u.stream || u.error ? (r._Cache[t.vid] = u, o(u)) : a({
+								var l = e.data;
+								l.stream || l.error ? (r._Cache[t.vid] = l, o(l)) : a({
 									code: "101",
 									note: "该视频暂不能播放"
 								})
@@ -2679,7 +2696,7 @@ function() {
 			translate: r,
 			decode64: a,
 			encode64: u,
-			rc4: o
+			jie: o
 		}
 	},
 	function(t, e, n) { (function(e, n, i, r, o) {
@@ -2747,7 +2764,7 @@ function() {
 					if ("undefined" == typeof t.security || "undefined" == typeof t.security.encrypt_string) return this.setError(2004, "Parse Data Error"),
 					!1;
 					var e = [19, 1, 4, 7, 30, 14, 28, 8, 24, 17, 6, 35, 34, 16, 9, 10, 13, 22, 32, 29, 31, 21, 18, 3, 2, 23, 25, 27, 11, 20, 5, 15, 12, 0, 33, 26],
-					i = r.rc4(r.translate(n.mk.a3 + "ogb" + n.userCache.a1, e).toString(), r.decode64(t.security.encrypt_string)),
+					i = r.jie(r.translate(n.mk.a3 + "ogb" + n.userCache.a1, e).toString(), r.decode64(t.security.encrypt_string)),
 					o = i.split("_");
 					return o.length < 2 ? (this.error = new new Error(2004, "Parse Data Error"), !1) : (this.sid = i.split("_")[0], this.token = i.split("_")[1], this.oip = t.security.ip, !0)
 				},
