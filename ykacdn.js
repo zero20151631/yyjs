@@ -1,4 +1,4 @@
-/*! ykv <0.1.4@2017-03-02T12:50Z> | Copyright (c) 2015-2016 1VERGE, Inc */
+/*! ykv <0.1.4@2017-03-09T08:38Z> | Copyright (c) 2015-2016 1VERGE, Inc */
 !
 function(t, e) {
 	"object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == typeof exports ? exports.ykv = e() : t.ykv = e()
@@ -2109,10 +2109,9 @@ function() {
 			}
 			var u = [].slice,
 			l = n(12),
-			c = n(13),
-			d = n(14);
+			c = (n(13), n(14));
 			Statistics = n(15);
-			var h = e.VideoPlayer.extend({
+			var d = e.VideoPlayer.extend({
 				init: function(t, e) {
 					var n = this;
 					n._setState("INIT"),
@@ -2193,23 +2192,15 @@ function() {
 				_initData: function(t) {
 					var e = this;
 					this._retryCustom || (this._retryCustom = 0);
-					var n = arguments.callee,
-					i = {
+					arguments.callee,
+					{
 						vid: decodeURIComponent(e._options.vid),
 						client_id: e._options.client_id,
 						password: e._options.password,
 						embsig: e._options.embsig
 					};
-					e.customData = {},
-					o.open.getCustom(i).then(function(n) {
-						e.customData = n,
-						"undefined" != typeof n.playsign && (e._options.sign = n.playsign),
-						e._getPlayData(t)
-					},
-					function() {
-						this._retryCustom < 3 ? (n(t), this._retryCustom++) : (e.customData = {},
-						e._setError(2003, "Get CustomData Failed"), delete this._retryCustom)
-					})
+					e._options.sign = e._options.embsig,
+					e._getPlayData(t)
 				},
 				_getPlayData: function(t) {
 					var e = this;
@@ -2301,7 +2292,7 @@ function() {
 						function() {
 							e.play()
 						}),
-						e.reporter = new d(e),
+						e.reporter = new c(e),
 						e._setState("READY")
 					}) : void e._setError(1e4, "Param Error:please set vid && client_id")
 				},
@@ -2345,7 +2336,7 @@ function() {
 						vs: "1.0"
 					};
 					n.client_id && (s.partnerid = n.client_id),
-					r.atm && (s.atm = r.atm),
+					r && r.atm && (s.atm = r.atm),
 					s._ti = encodeURIComponent(i.video.title),
 					this._adoptions = s
 				},
@@ -2355,21 +2346,7 @@ function() {
 					e._initAdOptions(),
 					e._adoptions.p = 7,
 					e._setState("AD"),
-					o.ad.getFrontData(e._adoptions).then(function(n) {
-						var i = {
-							vid: e._options.vid,
-							quality: e.currentType.quality,
-							password: e._options.password,
-							client_id: e._options.client_id,
-							sid: e.playData.sid,
-							token: e.playData.token,
-							oip: e.playData.oip
-						};
-						t(new c(n, i), "front")
-					},
-					function() {
-						e.trigger("onAdEnded")
-					})
+					e.trigger("onAdEnded")
 				},
 				_initPauseAd: function() {
 					var t = this;
@@ -2380,8 +2357,7 @@ function() {
 					this.reporter.addPlayerStaticReport(),
 					this.reporter.addPlayerDurationReport(59),
 					this.reporter.sendVVLog(59),
-					this.reporter.sendTSLog(60),
-					this.reporter.sendClientConsumeReport()
+					this.reporter.sendTSLog(60)
 				},
 				bindEvents: function() {
 					var t = this;
@@ -2405,16 +2381,18 @@ function() {
 					a
 				},
 				sendAcfunMonitor: function(t, e, n, i) {
-					var r = "http://aplay-vod.cn-beijing.aliyuncs.com/acfun/monitor?",
-					s = {};
-					s.vid = t,
-					s.source = e,
-					s.code = n,
-					s.time = i,
-					o.log.send(r + a.urlParameter(s))
+					var r = this,
+					s = "http://aplay-vod.cn-beijing.aliyuncs.com/acfun/monitor?",
+					u = {};
+					u.sign = r._options.embsig,
+					u.vid = t,
+					u.source = e,
+					u.code = n,
+					u.time = i,
+					o.log.send(s + a.urlParameter(u))
 				}
 			});
-			t.exports = h
+			t.exports = d
 		}).call(e, n(1), n(2), n(4), n(6), n(11))
 	},
 	function(t, e, n) {
