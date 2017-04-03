@@ -1,4 +1,4 @@
-/*! ykv <0.1.4@2017-03-09T08:38Z> | Copyright (c) 2015-2016 1VERGE, Inc */
+/*! ykv <0.1.4@2017-03-29T02:48Z> | Copyright (c) 2015-2016 1VERGE, Inc */
 !
 function(t, e) {
 	"object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == typeof exports ? exports.ykv = e() : t.ykv = e()
@@ -1839,7 +1839,7 @@ function() {
 			var n = e.browser,
 			i = e.ObjectCreate({
 				ctype: "86",
-				ev: 2,
+				ev: 3,
 				defaultQuality: "mp4",
 				defaultLanguage: "guoyu",
 				ek: {
@@ -1849,7 +1849,8 @@ function() {
 				mk: {
 					a3: "1z4i",
 					a4: "86rv",
-					a5: "f45"
+					a5: "f45",
+					k3: "b7"
 				},
 				PLAYERSTATE: {
 					INIT: "PLAYER_STATE_INIT",
@@ -2087,6 +2088,10 @@ function() {
 				getPlayerType: function(t) {
 					var e;
 					return e = "h5" == t ? n.isSupportH5M3U8 ? "h5m3u8": n.isSupportH5MP4 ? "h5mp4": n.isSupportFlash ? "flash": "error": "flash" == t ? n.isSupportFlash ? "flash": n.isSupportH5M3U8 ? "h5m3u8": n.isSupportH5MP4 ? "h5mp4": "error": "error"
+				},
+				k3: {
+					a0: "3d9",
+					a2: "ae1"
 				},
 				isPlayFromAli: !1,
 				MONITOR_TYPE: {
@@ -2543,13 +2548,12 @@ function() {
 							data: s,
 							time: 1e4,
 							success: function(e) {
-								var s = 80481;
 								if (e.encrypt && "1" === e.encrypt) {
-									var u = n.jie(i.ek.a1 + s + i.ek.a8, n.decode64(e.data));
-									e.data = JSON.parse(u)
+									var i = r._decode(n.decode64(e.data));
+									e.data = JSON.parse(i)
 								}
-								var l = e.data;
-								l.stream || l.error ? (r._Cache[t.vid] = l, o(l)) : a({
+								var s = e.data;
+								s.stream || s.error ? (r._Cache[t.vid] = s, o(s)) : a({
 									code: "101",
 									note: "该视频暂不能播放"
 								})
@@ -2562,6 +2566,9 @@ function() {
 							}
 						})
 					})
+				},
+				_decode: function(t) {
+					return n.jie(i.k3.a0 + i.mk.k3 + i.k3.a2, t)
 				},
 				_Cache: {},
 				_parsePaths: function(t, e) {
@@ -2802,21 +2809,21 @@ function() {
 							l = 0,
 							c = 0,
 							d = [], h = 0; h < u.length; h++) {
-								var p = u[h];
-								if (null == p) break;
-								var f = {
+								var f = u[h];
+								if (null == f) break;
+								var p = {
 									no: h,
-									seconds: Number(p.total_milliseconds_video) / 1e3,
+									seconds: Number(f.total_milliseconds_video) / 1e3,
 									seconds_video: Number(o.milliseconds_video) / 1e3,
-									key: p.key,
+									key: f.key,
 									fileId: e._getFileId(o.stream_fileid, h),
 									type: a,
-									url: p.url
+									url: f.url
 								};
-								f.url ? f.src = f.url: f.src = e._getVideoSrc(f),
-								l += parseInt(f.seconds),
-								c += parseInt(p.size),
-								d.push(f)
+								p.url ? p.src = p.url: p.src = e._getVideoSrc(p),
+								l += parseInt(p.seconds),
+								c += parseInt(f.size),
+								d.push(p)
 							}
 							e._getLangVid(s.key);
 							i[s.key] || (i[s.key] = {
@@ -2967,12 +2974,12 @@ function() {
 							}), 0 !== this._vtvc.length) for (var c = 0; c < this._vtvc.length; c++) {
 								var d = this._vtvc[c],
 								h = this._vtvc[c].VC,
-								p = d.pos_;
-								p == -1 && t.VTVC.push({
+								f = d.pos_;
+								f == -1 && t.VTVC.push({
 									U: h,
 									T: 0
 								}),
-								p == n && t.VTVC.push({
+								f == n && t.VTVC.push({
 									U: h,
 									T: e
 								})
