@@ -1,4 +1,4 @@
-/*! ykv <0.1.4@2017-03-29T02:48Z> | Copyright (c) 2015-2016 1VERGE, Inc */
+/*! ykv <0.1.4@2017-05-22T08:34Z> | Copyright (c) 2015-2016 1VERGE, Inc */
 !
 function(t, e) {
 	"object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == typeof exports ? exports.ykv = e() : t.ykv = e()
@@ -1839,18 +1839,20 @@ function() {
 			var n = e.browser,
 			i = e.ObjectCreate({
 				ctype: "86",
-				ev: 3,
+				ev: 4,
 				defaultQuality: "mp4",
 				defaultLanguage: "guoyu",
 				ek: {
 					a1: "bf",
-					a8: "f"
+					a8: "f",
+					x2: "Kz0mooZM"
 				},
 				mk: {
 					a3: "1z4i",
 					a4: "86rv",
 					a5: "f45",
-					k3: "b7"
+					k3: "b7",
+					nk: "m1uN9G6c"
 				},
 				PLAYERSTATE: {
 					INIT: "PLAYER_STATE_INIT",
@@ -2541,9 +2543,11 @@ function() {
 						};
 						t.client_id && (s.cid = t.client_id),
 						t.sign && (s.sign = t.sign),
-						t.password && (s.pwd = escape(t.password)),
+						t.password && (s.pwd = escape(t.password));
+						var u = "http://aplay-vod.cn-beijing.aliyuncs.com/acfun/web";
+						u = "http://www.acfun.cn/jsplayer_data",
 						e.jsonp({
-							url: "http://aplay-vod.cn-beijing.aliyuncs.com/acfun/web",
+							url: u,
 							callback: "callback",
 							data: s,
 							time: 1e4,
@@ -2568,7 +2572,7 @@ function() {
 					})
 				},
 				_decode: function(t) {
-					return n.jie(i.k3.a0 + i.mk.k3 + i.k3.a2, t)
+					return n.jie(i.mk.nk + i.ek.x2, t)
 				},
 				_Cache: {},
 				_parsePaths: function(t, e) {
@@ -2809,21 +2813,21 @@ function() {
 							l = 0,
 							c = 0,
 							d = [], h = 0; h < u.length; h++) {
-								var f = u[h];
-								if (null == f) break;
-								var p = {
+								var p = u[h];
+								if (null == p) break;
+								var f = {
 									no: h,
-									seconds: Number(f.total_milliseconds_video) / 1e3,
+									seconds: Number(p.total_milliseconds_video) / 1e3,
 									seconds_video: Number(o.milliseconds_video) / 1e3,
-									key: f.key,
+									key: p.key,
 									fileId: e._getFileId(o.stream_fileid, h),
 									type: a,
-									url: f.url
+									url: p.url
 								};
-								p.url ? p.src = p.url: p.src = e._getVideoSrc(p),
-								l += parseInt(p.seconds),
-								c += parseInt(f.size),
-								d.push(p)
+								f.url ? f.src = f.url: f.src = e._getVideoSrc(f),
+								l += parseInt(f.seconds),
+								c += parseInt(p.size),
+								d.push(f)
 							}
 							e._getLangVid(s.key);
 							i[s.key] || (i[s.key] = {
@@ -2974,12 +2978,12 @@ function() {
 							}), 0 !== this._vtvc.length) for (var c = 0; c < this._vtvc.length; c++) {
 								var d = this._vtvc[c],
 								h = this._vtvc[c].VC,
-								f = d.pos_;
-								f == -1 && t.VTVC.push({
+								p = d.pos_;
+								p == -1 && t.VTVC.push({
 									U: h,
 									T: 0
 								}),
-								f == n && t.VTVC.push({
+								p == n && t.VTVC.push({
 									U: h,
 									T: e
 								})
