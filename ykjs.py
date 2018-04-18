@@ -9,6 +9,9 @@ a6 = 'poz';
 a7 = "3d9";
 a8 = "b7";
 a9 = "ae1";
+a10 = "1z4i";
+a11 = "ogb";
+a12 =  "v";
 
 #functions
 def Ba(b):
@@ -159,7 +162,7 @@ decode64 = Ba
 
 def jiemiep():
     sid_create_list = [19, 1, 4, 7, 30, 14, 28, 8, 24, 17, 6, 35, 34, 16, 9, 10, 13, 22, 32, 29, 31, 21, 18, 3, 2, 23, 25, 27, 11, 20, 5, 15, 12, 0, 33, 26]
-    g = M(a7 + a8 + a9, sid_create_list)
+    g = M(a10 + a11 + a12, sid_create_list)
     return g
 
 data = jiemiep();
